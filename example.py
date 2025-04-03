@@ -24,8 +24,7 @@ api = SoftExpertWorkflowApi(option)
 #### CRIAR UMA INSTANCIA
 instancia = None
 try:
-    #instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste", UserID="36460047898")
-    instancia = 'SM2025000065'
+    instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste")
     print(f"Instancia criada com sucesso: {instancia}")
 except SoftExpertException as e:
     print(f"Erro do SE: {e}")
