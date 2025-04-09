@@ -24,8 +24,7 @@ api = SoftExpertWorkflowApi(option)
 #### CRIAR UMA INSTANCIA
 instancia = None
 try:
-    #instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste", UserID="36460047898")
-    instancia = 'SM2025000065'
+    instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste")
     print(f"Instancia criada com sucesso: {instancia}")
 except SoftExpertException as e:
     print(f"Erro do SE: {e}")
@@ -75,6 +74,24 @@ except SoftExpertException as e:
 except Exception as e:
     print(f"Erro genérico: {e}")
     exit()
+
+
+
+
+#### ANEXAR UM ARQUIVO NA INSTÂNCIA (MENU ANEXO DO LADO ESQUERDO)
+try:
+    bin = open(os.path.join(os.getcwd(), "example.png"), "rb").read()
+    filename = "example.png"
+    api.newAttachment(WorkflowID=instancia, ActivityID="atvsolicitarmiro", FileName="example.png", FileContent=bin)
+    print(f"Atividade executada com sucesso!")
+except SoftExpertException as e:
+    print(f"Erro do SE: {e}")
+    exit()
+except Exception as e:
+    print(f"Erro genérico: {e}")
+    exit()
+
+
 
 
 
