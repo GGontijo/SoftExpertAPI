@@ -77,6 +77,24 @@ except Exception as e:
 
 
 
+
+#### ANEXAR UM ARQUIVO NA INSTÂNCIA (MENU ANEXO DO LADO ESQUERDO)
+try:
+    bin = open(os.path.join(os.getcwd(), "example.png"), "rb").read()
+    filename = "example.png"
+    api.newAttachment(WorkflowID=instancia, ActivityID="atvsolicitarmiro", FileName="example.png", FileContent=bin)
+    print(f"Atividade executada com sucesso!")
+except SoftExpertException as e:
+    print(f"Erro do SE: {e}")
+    exit()
+except Exception as e:
+    print(f"Erro genérico: {e}")
+    exit()
+
+
+
+
+
 #### EXECUTAR ATIVIDADE
 try:
     api.executeActivity(WorkflowID=instancia, ActivityID="atvsolicitarmiro", ActionSequence=1)

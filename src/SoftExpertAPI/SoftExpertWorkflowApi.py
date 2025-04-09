@@ -1,4 +1,5 @@
 import base64
+from io import BufferedReader
 from .SoftExpertOptions import SoftExpertOptions
 from .SoftExpertBaseAPI import SoftExpertBaseAPI
 from .SoftExpertException import SoftExpertException
@@ -17,7 +18,25 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
     def newWorkflow(self, ProcessID:str , WorkflowTitle: str, UserID: str = None):
         """
         Cria um workflow
+        
+        :param ProcessID: ID da instância de workflow
+        :type ProcessID: str
+
+        :param WorkflowTitle: ID da entidade/tabela que será editada
+        :type WorkflowTitle: str
+
+        :param UserID: Matrícula do usuário
+        :type UserID: str, optional
+
+        :raises SoftExpertException.SoftExpertException: Tipo de erro retornado pelo SoftExpert
+        :raises Exception: Demais erros
+        
+        :return: O ID da instância de workflow gerada. Em caso de erro, um SoftExpertException.SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
+        :rtype: str
+
+        Exemplos: https://github.com/GGontijo/SoftExpertAPI/blob/main/README.md
         """
+
         action = "urn:newWorkflow"
 
         xml_UserID = ""
@@ -112,8 +131,30 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
        
     def editEntityRecord(self, WorkflowID: str, EntityID: str, form: dict, relationship: dict = None, files: dict = None):
         """
-        Permite editar o formulário de uma instância
+        Permite editar o(s) formulário(s) de uma instância de workflow
 
+        :param WorkflowID: ID da instância de workflow
+        :type WorkflowID: str
+
+        :param EntityID: ID da entidade/tabela que será editada
+        :type ActivityID: str
+
+        :param form: Dicionário contendo chave/valor de todos os itens a serem editados
+        :type form: dict
+
+        :param relationship: Dicionário contendo chave/valor de todos os relacionamentos a serem editados
+        :type relationship: dict
+
+        :param files: Dicionário contendo chave/valor de todos os arquivos do formulário a serem anexados
+        :type files: str, optional
+
+        :raises SoftExpertException.SoftExpertException: Tipo de erro retornado pelo SoftExpert
+        :raises Exception: Demais erros
+        
+        :return: None. Em caso de sucesso, nada é retornado. Em caso de erro, um SoftExpertException.SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
+        :rtype: Nome
+
+        Obs.: 
         Valor do atributo da tabela de formulário.
         Observações de acordo com o tipo do atributo:
         ▪ Número: dígitos numéricos sem separador de milhar e decimal
@@ -121,8 +162,11 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         ▪ Data: YYYY-MM-DD
         ▪ Hora: HH:MM
         ▪ Boolean: 0 ou 1
+
+        Exemplos: https://github.com/GGontijo/SoftExpertAPI/blob/main/README.md
         """
 
+        #CRIAR IF AQUI
         action = "urn:editEntityRecord"
         xml_Form = ""
         for key, value in form.items():
@@ -147,6 +191,8 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
                         </urn:Relationship>
                     """
         xml_Files = ""
+
+        #CRIAR IF AQUI
         for key, value in files.items():
             for subkey, subvalue in value.items():
                 xml_Files += f"""
@@ -194,3 +240,68 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         Detail = root.find(".//Detail").text
         if(Status == "FAILURE"):
             raise SoftExpertException.SoftExpertException(f"Resposta do SoftExpert: {Detail}", xml_body)
+
+
+
+
+
+
+
+    def newAttachment(self, WorkflowID: str, ActivityID: str, FileName: str, FileContent: BufferedReader, UserID: str = None):
+        """
+        Anexa um arquivo em uma instância de workflow em uma determinada atividade
+
+        :param WorkflowID: ID da instância de workflow
+        :type WorkflowID: str
+
+        :param ActivityID: ID da atividade em que o arquivo será anexado
+        :type ActivityID: str
+
+        :param FileName: Nome do arquivo com a extensão. Ex. documento.docx
+        :type FileName: str
+
+        :param FileContent: Arquivo em formato binário. Ex.: open(os.path.join(os.getcwd(), "example.png"), "rb").read()
+        :type FileContent: BufferedReader
+
+        :param UserID: Matrícula do usuário
+        :type UserID: str, optional
+
+        :raises SoftExpertException.SoftExpertException: Tipo de erro retornado pelo SoftExpert
+        :raises Exception: Demais erros
+        
+        :return: None. Em caso de sucesso, nada é retornado. Em caso de erro, um SoftExpertException.SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
+        :rtype: Nome
+
+        Exemplos: https://github.com/GGontijo/SoftExpertAPI/blob/main/README.md
+        """
+        action = "urn:newAttachment"
+
+        xml_UserID = ""
+        if(UserID != None):
+            xml_UserID = f"<urn:UserID>{UserID}</urn:UserID>"
+        
+        xml_body = f"""
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:workflow">
+            <soapenv:Header/>
+            <soapenv:Body>
+                <{action}>
+                    <urn:WorkflowID>{WorkflowID}</urn:WorkflowID>
+                    <urn:ActivityID>{ActivityID}</urn:ActivityID>
+                    <urn:FileName>{FileName}</urn:FileName>
+                    <urn:FileContent>{base64.b64encode(FileContent).decode()}</urn:FileContent>
+                    {xml_UserID}
+                </{action}>
+            </soapenv:Body>
+            </soapenv:Envelope>
+        """
+
+        reponse_body = self.request(action=action, xml_body=xml_body)
+
+        # Parseando o XML
+        response_body_cleaned = self._remove_namespace(reponse_body)
+        root = ET.fromstring(response_body_cleaned)
+
+        Status = root.find(".//Status").text
+        Detail = root.find(".//Detail").text
+        if(Status == "FAILURE"):
+            raise SoftExpertException.SoftExpertException(f"Resposta do SoftExpert: {Detail}")
