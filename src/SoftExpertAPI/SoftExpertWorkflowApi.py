@@ -129,7 +129,7 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
 
 
        
-    def editEntityRecord(self, WorkflowID: str, EntityID: str, form: dict, relationship: dict = None, files: dict = None):
+    def editEntityRecord(self, WorkflowID: str, EntityID: str, form: dict = None, relationship: dict = None, files: dict = None):
         """
         Permite editar o(s) formulário(s) de uma instância de workflow
 
@@ -166,17 +166,23 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         Exemplos: https://github.com/GGontijo/SoftExpertAPI/blob/main/README.md
         """
 
-        #CRIAR IF AQUI
+        if(form == None and relationship == None and files == None):
+            raise SoftExpertException("Nada informado para ser editado")
+            # Se nada passado para ser editado, então retorna exception
+
+        
         action = "urn:editEntityRecord"
         xml_Form = ""
-        for key, value in form.items():
-            xml_Form += f"""
-                <urn:EntityAttribute>
-                    <urn:EntityAttributeID>{key}</urn:EntityAttributeID>
-                    <urn:EntityAttributeValue>{value}</urn:EntityAttributeValue>
-                </urn:EntityAttribute>
-            """
+        if(form != None):
+            for key, value in form.items():
+                xml_Form += f"""
+                    <urn:EntityAttribute>
+                        <urn:EntityAttributeID>{key}</urn:EntityAttributeID>
+                        <urn:EntityAttributeValue>{value}</urn:EntityAttributeValue>
+                    </urn:EntityAttribute>
+                """
         
+
         xml_Relationship = ""
         if(relationship != None):
             for key, value in relationship.items():
@@ -190,18 +196,18 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
                             </urn:RelationshipAttribute>
                         </urn:Relationship>
                     """
-        xml_Files = ""
 
-        #CRIAR IF AQUI
-        for key, value in files.items():
-            for subkey, subvalue in value.items():
-                xml_Files += f"""
-                    <urn:EntityAttributeFile>
-                        <urn:EntityAttributeID>{key}</urn:EntityAttributeID>
-                        <urn:FileName>{subkey}</urn:FileName>
-                        <urn:FileContent>{base64.b64encode(subvalue).decode()}</urn:FileContent>
-                    </urn:EntityAttributeFile>
-                """
+        xml_Files = ""
+        if (files != None):
+            for key, value in files.items():
+                for subkey, subvalue in value.items():
+                    xml_Files += f"""
+                        <urn:EntityAttributeFile>
+                            <urn:EntityAttributeID>{key}</urn:EntityAttributeID>
+                            <urn:FileName>{subkey}</urn:FileName>
+                            <urn:FileContent>{base64.b64encode(subvalue).decode()}</urn:FileContent>
+                        </urn:EntityAttributeFile>
+                    """
 
 
         xml_body = f"""
