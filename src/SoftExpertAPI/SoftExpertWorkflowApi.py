@@ -28,10 +28,10 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         :param UserID: Matrícula do usuário
         :type UserID: str, optional
 
-        :raises SoftExpertException.SoftExpertException: Tipo de erro retornado pelo SoftExpert
+        :raises SoftExpertException: Tipo de erro retornado pelo SoftExpert
         :raises Exception: Demais erros
         
-        :return: O ID da instância de workflow gerada. Em caso de erro, um SoftExpertException.SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
+        :return: O ID da instância de workflow gerada. Em caso de erro, um SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
         :rtype: str
 
         Exemplos: https://github.com/GGontijo/SoftExpertAPI/blob/main/README.md
@@ -75,7 +75,7 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         
         except:
             Detail = root.find(".//Detail").text
-            raise SoftExpertException.SoftExpertException(f"Resposta do SoftExpert: {Detail}")
+            raise SoftExpertException(f"Resposta do SoftExpert: {Detail}")
 
        
 
@@ -122,7 +122,7 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         Status = root.find(".//Status").text
         Detail = root.find(".//Detail").text
         if(Status == "FAILURE"):
-            raise SoftExpertException.SoftExpertException(f"Resposta do SoftExpert: {Detail}")
+            raise SoftExpertException(f"Resposta do SoftExpert: {Detail}")
 
 
 
@@ -148,10 +148,10 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         :param files: Dicionário contendo chave/valor de todos os arquivos do formulário a serem anexados
         :type files: str, optional
 
-        :raises SoftExpertException.SoftExpertException: Tipo de erro retornado pelo SoftExpert
+        :raises SoftExpertException: Tipo de erro retornado pelo SoftExpert
         :raises Exception: Demais erros
         
-        :return: None. Em caso de sucesso, nada é retornado. Em caso de erro, um SoftExpertException.SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
+        :return: None. Em caso de sucesso, nada é retornado. Em caso de erro, um SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
         :rtype: Nome
 
         Obs.: 
@@ -245,7 +245,7 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         Status = root.find(".//Status").text
         Detail = root.find(".//Detail").text
         if(Status == "FAILURE"):
-            raise SoftExpertException.SoftExpertException(f"Resposta do SoftExpert: {Detail}", xml_body)
+            raise SoftExpertException(f"Resposta do SoftExpert: {Detail}", xml_body)
 
 
 
@@ -272,10 +272,10 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         :param UserID: Matrícula do usuário
         :type UserID: str, optional
 
-        :raises SoftExpertException.SoftExpertException: Tipo de erro retornado pelo SoftExpert
+        :raises SoftExpertException: Tipo de erro retornado pelo SoftExpert
         :raises Exception: Demais erros
         
-        :return: None. Em caso de sucesso, nada é retornado. Em caso de erro, um SoftExpertException.SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
+        :return: None. Em caso de sucesso, nada é retornado. Em caso de erro, um SoftExpertException ou Exception é lançado e deve ser capturado com try/catch
         :rtype: Nome
 
         Exemplos: https://github.com/GGontijo/SoftExpertAPI/blob/main/README.md
@@ -310,4 +310,4 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         Status = root.find(".//Status").text
         Detail = root.find(".//Detail").text
         if(Status == "FAILURE"):
-            raise SoftExpertException.SoftExpertException(f"Resposta do SoftExpert: {Detail}")
+            raise SoftExpertException(f"Resposta do SoftExpert: {Detail}")
