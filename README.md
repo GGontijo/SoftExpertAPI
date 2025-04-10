@@ -32,7 +32,7 @@ try:
     form = {
         # chave é o id do campo no banco de dados
         # valor é o valor que será atribuido
-        "pedcompra": "Perdido de compra",
+        "pedcompra": "Pedido de compra",
         "chave": "2390840923890482093849023849023904809238904",
     }
 
