@@ -6,13 +6,13 @@ Instanciar a lib:
 ``` python
 option = SoftExpertOptions(
     url = "https://softexpert.com",
-    authorization = "Basic SSEU_TOKEN", # pode ser Basic ou Bearer
-    userID = "sistema.automatico" # Matricula do usuário padrão das operações. Pode ser informado usuário diferente em cada endpoiont chamado
+    authorization = "Basic SEU_TOKEN", # pode ser Basic ou Bearer
+    userID = "sistema.automatico" # Matricula do usuário padrão das operações. Pode ser informado usuário diferente em cada endpoint chamado
 )
 api = SoftExpertWorkflowApi(option)
 ```
 
-Criar instancia de Workflow
+Criar instância de Workflow
 ``` python
 try:
     instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste")

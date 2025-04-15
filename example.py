@@ -83,7 +83,7 @@ try:
     bin = open(os.path.join(os.getcwd(), "example.png"), "rb").read()
     filename = "example.png"
     api.newAttachment(WorkflowID=instancia, ActivityID="atvsolicitarmiro", FileName="example.png", FileContent=bin)
-    print(f"Atividade executada com sucesso!")
+    print(f"Arquivo anexado com sucesso!")
 except SoftExpertException as e:
     print(f"Erro do SE: {e}")
     exit()
