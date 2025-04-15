@@ -94,3 +94,27 @@ except Exception as e:
     print(f"Erro genérico: {e}")
     exit()
 ```
+
+
+## Build
+
+Instale as ferramentas de build e upload
+```bash
+pip install build twine
+```
+
+Execute o comando abaixo na raiz do seu projeto para gerar os arquivos de distribuição
+```bash
+python -m build
+```
+
+Enviar pacote
+```bash
+twine upload dist/*
+```
+
+Para buildar de forma automática:
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
