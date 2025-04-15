@@ -1,9 +1,16 @@
 # SoftExpertAPI
-Esta lib fornece um wrapper às APIs SoftExpert
+Esta lib fornece um wrapper às APIs SoftExpert  
 
+# Getting Stated
+Instalar a Lib:
+``` bash
+pip install SoftExpertAPI
+```
 
-Instanciar a lib:
+Configurar e criar uma instância:
 ``` python
+from SoftExpertAPI import SoftExpertException, SoftExpertOptions, SoftExpertWorkflowApi
+
 option = SoftExpertOptions(
     url = "https://softexpert.com",
     authorization = "Basic SEU_TOKEN", # pode ser Basic ou Bearer
@@ -94,6 +101,8 @@ except Exception as e:
     print(f"Erro genérico: {e}")
     exit()
 ```
+
+Exemplos completos e funcionais no arquivo [example.py](example.py)
 
 
 ## Build
