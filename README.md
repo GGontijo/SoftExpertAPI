@@ -39,7 +39,7 @@ try:
     form = {
         # chave é o id do campo no banco de dados
         # valor é o valor que será atribuido
-        "pedcompra": "Perdido de compra",
+        "pedcompra": "Pedido de compra",
         "chave": "2390840923890482093849023849023904809238904",
     }
 
@@ -123,6 +123,7 @@ except Exception as e:
     exit()
 ```
 
+
 Exemplos completos e funcionais no arquivo [example.py](example.py)
 
 
@@ -148,3 +149,4 @@ Para buildar de forma automática:
 git tag v1.0.1
 git push origin v1.0.1
 ```
+
