@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SoftExpertAPI"
-version = "0.1.0"
+version = "0.2.0"
 description = "Esta lib fornece um wrapper às APIs SoftExpert"
 authors = [{ name = "Gabriel Gontijo", email = "gabrieldercilio08@gmail.com" },{ name = "Hudson Ventura", email = "hudsonventura@outlook.com" }]
 readme = "README.md"

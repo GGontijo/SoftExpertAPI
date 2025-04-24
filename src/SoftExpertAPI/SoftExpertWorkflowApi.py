@@ -311,3 +311,60 @@ class SoftExpertWorkflowApi(SoftExpertBaseAPI):
         Detail = root.find(".//Detail").text
         if(Status == "FAILURE"):
             raise SoftExpertException(f"Resposta do SoftExpert: {Detail}")
+
+
+
+
+
+    def newChildEntityRecord(self, WorkflowID: str, MainEntityID: str, ChildRelationshipID: str, FormGrid: dict):
+        """
+        Adiciona um item em uma grid de uma instância de workflow
+
+        :param WorkflowID: ID da instância de workflow
+        :type WorkflowID: str    
+
+        :param MainEntityID: ID da entidade/tabela que será editada na instância de workflow
+        :type MainEntityID: str
+
+        :param ChildRelationshipID: ID do relacionamento que será editado na instância de workflow
+        :type ChildRelationshipID: str
+
+        :param FormGrid: Dicionário com os campos e seus respectivos valores
+        """
+        action = "urn:newChildEntityRecord"
+
+        xml_FormGrid = ""
+        for key, value in FormGrid.items():
+            xml_FormGrid += f"""
+                <urn:EntityAttribute>
+                    <urn:EntityAttributeID>{key}</urn:EntityAttributeID>
+                    <urn:EntityAttributeValue>{value}</urn:EntityAttributeValue>
+                </urn:EntityAttribute>
+            """
+
+        xml_body = f"""
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:workflow">
+            <soapenv:Header/>
+            <soapenv:Body>
+                <{action}>
+                    <urn:WorkflowID>{WorkflowID}</urn:WorkflowID>
+                    <urn:MainEntityID>{MainEntityID}</urn:MainEntityID>
+                    <urn:ChildRelationshipID>{ChildRelationshipID}</urn:ChildRelationshipID>
+                    <urn:EntityAttributeList>
+                        {xml_FormGrid}
+                    </urn:EntityAttributeList>
+                </{action}>
+            </soapenv:Body>
+            </soapenv:Envelope>
+        """
+
+        reponse_body = self.request(action=action, xml_body=xml_body)
+
+        # Parseando o XML
+        response_body_cleaned = self._remove_namespace(reponse_body)
+        root = ET.fromstring(response_body_cleaned)
+
+        Status = root.find(".//Status").text
+        Detail = root.find(".//Detail").text
+        if(Status == "FAILURE"):
+            raise SoftExpertException(f"Resposta do SoftExpert: {Detail}")

@@ -24,7 +24,7 @@ api = SoftExpertWorkflowApi(option)
 #### CRIAR UMA INSTANCIA
 instancia = None
 try:
-    instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste")
+    instancia = api.newWorkflow(ProcessID="ADTE", WorkflowTitle="Apenas um teste")
     print(f"Instancia criada com sucesso: {instancia}")
 except SoftExpertException as e:
     print(f"Erro do SE: {e}")
@@ -74,6 +74,29 @@ except SoftExpertException as e:
 except Exception as e:
     print(f"Erro genérico: {e}")
     exit()
+
+
+
+
+#### ADICIONA UM ITEM EM UMA GRID
+try:
+    MainEntityID = "adte";               # ID da tabela principal
+    ChildRelationshipID = "relcheck";    # ID do relacionamento da grid
+    formGrid = {
+        # chave é o id do campo no banco de dados
+        # valor é o valor que será atribuido
+        "atividade": "teste de grid"
+    }
+
+    api.newChildEntityRecord(WorkflowID=instancia, MainEntityID=MainEntityID, ChildRelationshipID=ChildRelationshipID, FormGrid=formGrid)
+    print(f"Item adicionado à grid com sucesso!")
+except SoftExpertException as e:
+    print(f"Erro do SE: {e}")
+    exit()
+except Exception as e:
+    print(f"Erro genérico: {e}")
+    exit()
+
 
 
 

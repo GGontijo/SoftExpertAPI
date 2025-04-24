@@ -2,8 +2,8 @@ name: Publicar no PyPI
 
 on:
   push:
-    tags:
-      - 'v*'  # Aciona o workflow em tags como v1.0.0
+    branches:
+      - main
 
 jobs:
   build-and-publish:
