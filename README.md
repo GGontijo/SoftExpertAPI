@@ -1,150 +1,151 @@
 # SoftExpertAPI
-Esta lib fornece um wrapper às APIs SoftExpert  
+This library provides a wrapper for SoftExpert APIs
 
-# Getting Stated
-Instalar a Lib:
-``` bash
+# Getting Started
+Install the library:
+```bash
 pip install SoftExpertAPI
-```
 
-Configurar e criar uma instância:
+Configure and create an instance:
 ``` python
+from SoftExpertAPI import SoftExpertException, SoftExpertOptions, SoftExpertWorkflowApi
+
 from SoftExpertAPI import SoftExpertException, SoftExpertOptions, SoftExpertWorkflowApi
 
 option = SoftExpertOptions(
     url = "https://softexpert.com",
-    authorization = "Basic SEU_TOKEN", # pode ser Basic ou Bearer
-    userID = "sistema.automatico" # Matricula do usuário padrão das operações. Pode ser informado usuário diferente em cada endpoint chamado
+    authorization = "Basic YOUR_TOKEN", # can be Basic or Bearer
+    userID = "system.user" # Default user ID for operations. Different users can be specified in each endpoint call
 )
 api = SoftExpertWorkflowApi(option)
 ```
 
-Criar instância de Workflow
+Create Workflow instance
 ``` python
 try:
-    instancia = api.newWorkflow(ProcessID="SM", WorkflowTitle="Apenas um teste")
-    print(f"Instancia criada com sucesso: {instancia}")
+    instance = api.newWorkflow(ProcessID="SM", WorkflowTitle="Just a test")
+    print(f"Instance created successfully: {instance}")
 except SoftExpertException as e:
-    print(f"Erro do SE: {e}")
+    print(f"SE Error: {e}")
     exit()
 except Exception as e:
-    print(f"Erro genérico: {e}")
+    print(f"Generic error: {e}")
     exit()
 ```
 
-Editar o formulário, relacionamentos (selectbox) e anexar arquivos no formulário:
+Edit the form, relationships (select boxes), and attach files to the form:
 ``` python
 try:
     
     form = {
-        # chave é o id do campo no banco de dados
-        # valor é o valor que será atribuido
-        "pedcompra": "Pedido de compra",
+        # key is the field ID in the database
+        # value is the value to be assigned
+        "pedcompra": "Purchase order",
         "chave": "2390840923890482093849023849023904809238904",
     }
 
     relations = {
-        # chave é o id do relacionamento
-        # valor:
-            # chave é o id do campo da tabela do relacionamento
-            # valor é o valor que será atribuido
+        # key is the relationship ID
+        # value:
+            # key is the field ID in the related table
+            # value is the value to be assigned
         "relmoeda": {
-            "idmoeda": "DOLAR"
+            "idmoeda": "DOLLAR"
         }
     }
 
     files = {
-        # chave é o id do campo no banco de dados
-        # valor:
-            # chave é o nome do arquivo
-            # valor é binário do arquivo (não passar o base64)
+        # key is the field ID in the database
+        # value:
+            # key is the file name
+            # value is the file binary (do not use base64)
         "boleto": {
             "example.png": open(os.path.join(os.getcwd(), "example.png"), "rb").read()
         }
     }
 
-    api.editEntityRecord(WorkflowID=instancia, EntityID="SOLMIRO", form=form, relationship=relations, files=files)
-    print(f"Formulário editado com sucesso!")
+    api.editEntityRecord(WorkflowID=instance, EntityID="SOLMIRO", form=form, relationship=relations, files=files)
+    print(f"Form edited successfully!")
 except SoftExpertException as e:
-    print(f"Erro do SE: {e}")
+    print(f"SE Error: {e}")
     exit()
 except Exception as e:
-    print(f"Erro genérico: {e}")
+    print(f"Generic error: {e}")
     exit()
 ```
 
-Adiciona um item em uma grid
+Add an item to a grid
 ``` python
 try:
-    MainEntityID = "adte";               # ID da tabela principal
-    ChildRelationshipID = "relcheck";    # ID do relacionamento da grid
+    MainEntityID = "adte";               # Main table ID
+    ChildRelationshipID = "relcheck";    # Grid relationship ID
     formGrid = {
-        # chave é o id do campo no banco de dados
-        # valor é o valor que será atribuido
-        "atividade": "teste de grid"
+        # key is the field ID in the database
+        # value is the value to be assigned
+        "atividade": "grid test"
     }
 
-    api.newChildEntityRecord(WorkflowID=instancia, MainEntityID=MainEntityID, ChildRelationshipID=ChildRelationshipID, FormGrid=formGrid)
-    print(f"Item adicionado à grid com sucesso!")
+    api.newChildEntityRecord(WorkflowID=instance, MainEntityID=MainEntityID, ChildRelationshipID=ChildRelationshipID, FormGrid=formGrid)
+    print(f"Item added to grid successfully!")
 except SoftExpertException as e:
-    print(f"Erro do SE: {e}")
+    print(f"SE Error: {e}")
     exit()
 except Exception as e:
-    print(f"Erro genérico: {e}")
+    print(f"Generic error: {e}")
     exit()
 ```
 
-Anexar arquivo em uma instância (menu de anexo do lado esquerdo):
+Attach file to an instance (left-side attachment menu):
 ``` python
 try:
     bin = open(os.path.join(os.getcwd(), "example.png"), "rb").read()
     filename = "example.png"
-    api.newAttachment(WorkflowID=instancia, ActivityID="atvsolicitarmiro", FileName="example.png", FileContent=bin)
-    print(f"Atividade executada com sucesso!")
+    api.newAttachment(WorkflowID=instance, ActivityID="atvsolicitarmiro", FileName="example.png", FileContent=bin)
+    print(f"Activity executed successfully!")
 except SoftExpertException as e:
-    print(f"Erro do SE: {e}")
+    print(f"SE Error: {e}")
     exit()
 except Exception as e:
-    print(f"Erro genérico: {e}")
+    print(f"Generic error: {e}")
     exit()
 ```
 
 
-Executar atividade:
+Execute activity:
 ``` python
 try:
-    api.executeActivity(WorkflowID=instancia, ActivityID="atvsolicitarmiro", ActionSequence=1)
-    print(f"Atividade executada com sucesso!")
+    api.executeActivity(WorkflowID=instance, ActivityID="atvsolicitarmiro", ActionSequence=1)
+    print(f"Activity executed successfully!")
 except SoftExpertException as e:
-    print(f"Erro do SE: {e}")
+    print(f"SE Error: {e}")
     exit()
 except Exception as e:
-    print(f"Erro genérico: {e}")
+    print(f"Generic error: {e}")
     exit()
 ```
 
 
-Exemplos completos e funcionais no arquivo [example.py](example.py)
+Complete working examples in [example.py](example.py)
 
 
 ## Build
 
-Instale as ferramentas de build e upload
+Install build tools and upload
 ```bash
 pip install build twine
 ```
 
-Execute o comando abaixo na raiz do seu projeto para gerar os arquivos de distribuição
+Run this command in the project root to generate distribution files
 ```bash
 python -m build
 ```
 
-Enviar pacote
+Upload package
 ```bash
 twine upload dist/*
 ```
 
-Para buildar de forma automática:
+For automatic build:
 ```bash
 git tag v1.0.1
 git push origin v1.0.1
